@@ -25,9 +25,10 @@ The only font format is True Type. Ex: font.ttf
 """
 import PySimpleGUI as sg
 from PIL import Image, ImageTk
-from editor import adicionarMargem, adicionarTexto, botarCodigo, gerarCodigo, juntar, nomeCartao
+from editor import adicionarMargem, adicionarTexto, botarCodigo, juntar, nomeCartao, gerarCodigo
 from os import listdir, getcwd, mkdir
 from requests import get
+
 
 def criarPastas():
     #This function will create all the necessary folders for the program.
@@ -127,7 +128,7 @@ def layout_principal() -> sg.Window:
         #######Main layout#######
         layout = [
             [sg.TabGroup([[sg.Tab("Text", tab_texto), sg.Tab("Cod", tab_codigo)]])],
-            [sg.Text("File"), sg.Combo(values=inputPasta, key="combo_imagemCarregar", size=(10, 1)), sg.Button("Refresh", key="botao_refreshFront") ,sg.Button("Load", key="button_loadFront")],
+            [sg.Text("File"), sg.Combo(values=inputPasta, key="combo_imagemCarregar", size=(30, 1), enable_events=True), sg.Button("Refresh", key="botao_refreshFront")],
             [sg.Push(), sg.Image(key="capa", size=(int(padraoSize[0]/2), int(padraoSize[1]/2))), sg.Push()],
             [sg.Button("save", key="botao_saveFront")]
             ]
@@ -209,6 +210,7 @@ def recarregarImagens():
     janela["combo_front"].update(values=inputPasta)
     janela["combo_back"].update(values=inputPasta)
 
+
 janela = layout_principal()
 
 while True:
@@ -217,7 +219,7 @@ while True:
         #if the X in the window was pressed
         break
     #Tab Front
-    elif evento == "button_loadFront":
+    elif evento == "combo_imagemCarregar":
         #It will load the image to be edited.
         """
         --Algorithm--
@@ -281,7 +283,7 @@ while True:
     elif evento == "botao_saveFront":
         #Save ur image on output folder.
         try:
-            dadosCapa["imagem"].save(f"output/{dadosCapa['nome']}")
+            dadosCapa["imagem"].save(f"output/carder_{dadosCapa['nome']}")
         except:
             sg.popup("Error saving image, verify if the original image name is valid.")
     elif evento == "botao_refreshFront":

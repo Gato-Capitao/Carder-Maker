@@ -1,6 +1,12 @@
 from PIL import Image, ImageDraw, ImageFont
 from barcode import Code128, writer
 from random import randint
+
+def gerarCodigo(value:str):
+    """Generate the code on output folder."""
+    
+    codigo = Code128(value, writer=writer.ImageWriter())
+    codigo.save("output/cod")
 def adicionarMargem(imagem:Image) -> Image:
     """
     This will add a border on the image
@@ -54,11 +60,6 @@ def adicionarTexto(imagem:Image, texto:str, centerX:bool, centerY:bool, x:int, y
     resultado.text((x, y), texto, fill=rgb, font=fonte)
     
     return imagem
-def gerarCodigo(codigo:str):
-    """Generate the code on output folder."""
-    
-    codigo = Code128(codigo, writer=writer.ImageWriter())
-    codigo.save("output/cod")
 def botarCodigo(imagem:Image, centerX:bool, CenterY:bool, y:int, x:int, resize:int) -> Image:
     """
     it will put the barcode on your image.
